@@ -1,14 +1,9 @@
 ## What's is project about
-This is project demonstrate how to use akka cluster sharding and akka remote. It did use akka distributed data to store
-cluster information but that didnot exist as code but configurations.
+This project demonstrates how to use akka cluster sharding and akka remoting. It also use akka distributed data to store
+cluster information but that part only exists in configuration
 
 ```
    cluster {
-     seed-nodes = [
-       "akka.tcp://ClusterSystem@192.168.1.157:2551"
- //      ,"akka.tcp://ClusterSystem@192.168.1.157:2552"
-     ]
-
      sharding.state-store-mode = ddata
    }
 
@@ -16,14 +11,15 @@ cluster information but that didnot exist as code but configurations.
 
 ```
 
-Before akka 2.4 where akka distributed data was introduced, we need external persistent layer to store cluster information,
-when leader is down, slave node selected as new leader and it restore leader's memory by reading from persistent layer.
+Before akka 2.4 where akka distributed data was introduced, we need external persistent layer to store cluster information.
+when leader is down, slave node selected as new leader and it restore leader's memory by reading those cluster information.
 
-When we try akka cluster sharding, akka's newest version is 2.3.6. At the time, we use akka-persistence-mongo as persistent
-layer, it works well but it introduced third-party dependency and `error prone`.
+When we first try akka cluster sharding last year, akka's newest version is 2.3.6. At the time, we use
+akka-persistence-mongo as persistent layer, it works well but it also introduced third-party dependency and `error prone`.
 
 ## How to run
 import project into intellij idea and click `run root` in `main.Boot`
+will need jdk1.8
 
 ## Configuration
 ClusterTool.enable set to true
@@ -45,6 +41,9 @@ to Node B, including those nmessage should be sent to Node A before A is shutdow
 wouldn't receive any messages from producer at both Node A and Node B, because those shardingProbe are all at Node B.
 [This is hard to verify, because we cannot control the message sent by producer at wrong time. An easy way to deal with
 this is introducing spray where we sent message at runtime through REST API]
+
+## How to verify akka remoting works
+todo
 
 ## Todo
 1. Add sbt package plugin to build fat jar
